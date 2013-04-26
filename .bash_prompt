@@ -68,5 +68,5 @@ function usernamehost() {
 	if [ $USER != `logname` ]; then echo "${MAGENTA}$USER ${RESET}at ${ORANGE}$HOSTNAME ${RESET}in "; fi
 }
 
-export PS1="\[$(usernamehost)\]\[$GREEN\]\w\[$RESET\]\[$(parse_branch)\]\[$RESET\]\n\$ \[$RESET\]"
+export PS1='`usernamehost`\[$GREEN\]\w\[$RESET\]`parse_branch`\[$RESET\]\n\$ \[$RESET\]'
 export PS2="\[$ORANGE\]→ \[$RESET\]"
