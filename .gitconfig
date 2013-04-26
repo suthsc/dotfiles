@@ -1,3 +1,7 @@
+[user]
+        name = Scott Sutherland
+        email = ssutherland@digitalriver.com
+
 [alias]
 	# View the SHA, description, and history graph of the latest 20 commits
 	l = log --pretty=oneline -n 20 --graph
@@ -74,5 +78,3 @@
 [url "git://gist.github.com/"]
 	insteadOf = "gist:"
 
-[push]
-	default = simple
