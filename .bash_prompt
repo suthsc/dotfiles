@@ -2,6 +2,8 @@
 # Shamelessly copied from https://github.com/gf3/dotfiles
 # Screenshot: http://i.imgur.com/s0Blh.png
 
+on_conjunction=' on '
+
 if [[ $COLORTERM = gnome-* && $TERM = xterm ]] && infocmp gnome-256color >/dev/null 2>&1; then
 	export TERM=gnome-256color
 elif infocmp xterm-256color >/dev/null 2>&1; then
@@ -44,12 +46,27 @@ export BOLD
 export RESET
 
 function parse_git_dirty() {
-	[[ $(git status 2> /dev/null | tail -n1) != *"working directory clean"* ]] && echo "*"
+	git diff --quiet --ignore-submodules HEAD 2>/dev/null; [ $? -eq 1 ] && echo '*'
 }
 
 function parse_git_branch() {
-	git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/\1$(parse_git_dirty)/"
+	git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/\[Git\] \1$(parse_git_dirty)/"
 }
 
-export PS1="\[${BOLD}${MAGENTA}\]\u \[$WHITE\]at \[$ORANGE\]\h \[$WHITE\]in \[$GREEN\]\w\[$WHITE\]\$([[ -n \$(git branch 2> /dev/null) ]] && echo \" on \")\[$PURPLE\]\$(parse_git_branch)\[$WHITE\]\n\$ \[$RESET\]"
+function parse_cvs_branch() {
+	cat CVS/Tag 2> /dev/null | sed -e 's/T\(.*\)/\[CVS\] \1/'
+}
+
+function parse_branch() {
+	if [ -a CVS/Tag ] || [[ -n $(git branch 2> /dev/null) ]]; then
+		local branchname="$(parse_git_branch)$(parse_cvs_branch)"
+		echo "${RESET}${on_conjunction}${PURPLE}${branchname}${RESET}"
+	fi
+}
+
+function usernamehost() {
+	if [ $USER != `logname` ]; then echo "${MAGENTA}$USER ${RESET}at ${ORANGE}$HOSTNAME ${RESET}in "; fi
+}
+
+export PS1='`usernamehost`\[$GREEN\]\w\[$RESET\]`parse_branch`\[$RESET\]\n\$ \[$RESET\]'
 export PS2="\[$ORANGE\]→ \[$RESET\]"
