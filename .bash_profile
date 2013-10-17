@@ -34,3 +34,28 @@ complete -o "nospace" -W "Contacts Calendar Dock Finder Mail Safari iTunes Syste
 
 # If possible, add tab completion for many more commands
 [ -f /etc/bash_completion ] && source /etc/bash_completion
+ 
+case "$TERM" in
+xterm*|rxvt*)
+
+    # Show the currently running command in the terminal title:
+    # http://www.davidpashley.com/articles/xterm-titles-with-bash.html
+    show_command_in_title_bar()
+    {
+        case "$BASH_COMMAND" in
+            *\033]0*)
+                # The command is trying to set the title bar as well;
+                # this is most likely the execution of $PROMPT_COMMAND.
+                # In any case nested escapes confuse the terminal, so don't
+                # output them.
+                ;;
+            *)
+                echo -ne "\033]0;${BASH_COMMAND}\007"
+                ;;
+        esac
+    }
+    trap show_command_in_title_bar DEBUG
+    ;;
+*)
+    ;;
+esac
