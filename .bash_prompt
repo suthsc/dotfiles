@@ -45,8 +45,16 @@ export WHITE
 export BOLD
 export RESET
 
+function git_dirty_character() {
+	if [ $1 -eq 124 ]; then
+		echo '?'
+	elif [[ $1 -eq 1 ]]; then
+		echo '*'
+	fi
+}
+
 function parse_git_dirty() {
-	timeout 0.5s git diff --quiet --ignore-submodules HEAD 2>/dev/null; [ $? -eq 124 ] && echo '?'; [ $? -eq 1 ] && echo '*'
+	timeout 0.5s git diff --quiet --ignore-submodules HEAD 2>/dev/null; git_dirty_character $?
 }
 
 function parse_git_branch() {
