@@ -50,13 +50,6 @@ alias gurl="curl --compressed"
 # Enhanced WHOIS lookups
 alias whois="whois -h whois-servers.net"
 
-# Flush Directory Service cache
-alias flush="dscacheutil -flushcache && killall -HUP mDNSResponder"
-
-# View HTTP traffic
-alias sniff="sudo ngrep -d 'en1' -t '^(GET|POST) ' 'tcp and port 80'"
-alias httpdump="sudo tcpdump -i en1 -n -s 0 -w - | grep -a -o -E \"Host\: .*|GET \/.*\""
-
 # Canonical hex dump; some systems have this symlinked
 command -v hd > /dev/null || alias hd="hexdump -C"
 
@@ -74,9 +67,6 @@ alias c='pygmentize -O style=monokai -f console256 -g'
 alias undopush="git push -f origin HEAD^:master"
 # git root
 alias gr='[ ! -z `git rev-parse --show-cdup` ] && cd `git rev-parse --show-cdup || pwd`'
-
-# Recursively delete `.DS_Store` files
-alias cleanup="find . -type f -name '*.DS_Store' -ls -delete"
 
 # ROT13-encode text. Works for decoding, too! ;)
 alias rot13='tr a-zA-Z n-za-mN-ZA-M'
