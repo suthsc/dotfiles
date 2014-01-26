@@ -76,7 +76,7 @@ function parse_branch() {
 }
 
 function usernamehost() {
-    if [ $USER != `logname` ]; then
+    if [[ $USER != `logname` || -n $SSH_CLIENT ]]; then
         echo "${MAGENTA}$USER ${RESET}at ${ORANGE}$HOSTNAME ${RESET}in ";
     fi
 }
