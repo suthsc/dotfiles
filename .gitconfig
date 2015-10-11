@@ -3,6 +3,9 @@
 	# View abbreviated SHA, description, and history graph of the latest 20 commits
 	l = log --pretty=oneline -n 20 --graph --abbrev-commit
 
+	# view the graph and branch history
+	lol = log --oneline --graph --decorate --all
+
 	# View the current working tree status using the short format
 	s = status -s
 
@@ -37,6 +40,9 @@
 
 	# Interactive rebase with the given number of latest commits
 	reb = "!r() { git rebase -i HEAD~$1; }; r"
+	in = "!gbi() { git log ..$1 --no-merges --format='%h | Author:%an | Date:%ad | %s' --date=local; }; gbi"
+	out = "!gbo() { git log $1.. --no-merges --format='%h | Author:%an | Date:%ad | %s' --date=local; }; gbo"
+	one = "!d1() { git diff --patience $1^..$1; }; d1"
 
 	# Remove the old tag with this name and tag the latest commit with it.
 	retag = "!r() { git tag -d $1 && git push origin :refs/tags/$1 && git tag $1; }; r"
