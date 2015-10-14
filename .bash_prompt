@@ -16,6 +16,7 @@ fi;
 prompt_git() {
 	local s='';
 	local branchName='';
+	local tracking='';
 
 	# Check if the current directory is in a Git repository.
 	if [ $(git rev-parse --is-inside-work-tree &>/dev/null; echo "${?}") == '0' ]; then
@@ -55,9 +56,13 @@ prompt_git() {
 			git rev-parse --short HEAD 2> /dev/null || \
 			echo '(unknown)')";
 
+		# Get the name of the tracking branch for the current branch.
+		tracking="$(git rev-parse --abbrev-ref @{upstream} 2> /dev/null)";
+
+		[ -n "${tracking}" ] && tracking=" ${tracking}";
 		[ -n "${s}" ] && s=" [${s}]";
 
-		echo -e "${1}${branchName}${2}${s}";
+		echo -e "${1}${branchName}${tracking}${blue}${s}";
 	else
 		return;
 	fi;
