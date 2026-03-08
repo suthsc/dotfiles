@@ -8,6 +8,9 @@
 	s = status -s
 	st = status
 
+        # fetch with prune
+        f = fetch --all --prune
+
 	# Show the diff between the latest commit and the current state.
 	d = !"git diff-index --quiet HEAD -- || clear; git --no-pager diff --patch-with-stat"
 
@@ -67,6 +70,8 @@
 
 	# Show the user email for the current repository.
 	whoami = config user.email
+
+        one = "!d1() { git diff --patience $1^..$1; }; d1"
 
 [apply]
 
